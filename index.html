@@ -121,8 +121,15 @@ section{position:relative;padding:140px 0}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 
 /* ---------- hero ---------- */
-.hero{padding:120px 0 110px;text-align:center;overflow:hidden}
-@media (max-width:640px){.hero{padding:72px 0 80px}}
+.hero{padding:184px 0 110px;margin-top:-64px;text-align:center;overflow:hidden;isolation:isolate}
+@media (max-width:640px){.hero{padding:136px 0 80px}}
+.hero > .wrap{position:relative;z-index:1}
+.hero-canvas{
+  position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.6) 64px,#000 160px,#000 58%,rgba(0,0,0,.55) 80%,transparent 100%);
+          mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.6) 64px,#000 160px,#000 58%,rgba(0,0,0,.55) 80%,transparent 100%);
+  opacity:0;will-change:opacity,transform;
+}
 .pill{
   display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 8px;border-radius:999px;
   border:1px solid var(--line-2);background:rgba(255,255,255,.025);font-size:13px;color:var(--text-2);
@@ -188,7 +195,7 @@ section{position:relative;padding:140px 0}
 .lc-step.on{color:var(--text)}
 .lc-step.on i{background:var(--accent);opacity:1;box-shadow:0 0 0 4px var(--accent-dim),0 0 14px var(--accent-glow)}
 .lc-step.done i{background:var(--accent);opacity:.55}
-.lc-step.final.on i{background:var(--live);box-shadow:0 0 0 4px rgba(61,220,151,.14),0 0 14px rgba(61,220,151,.4)}
+.lc-step.lc-final.on i{background:var(--live);box-shadow:0 0 0 4px rgba(61,220,151,.14),0 0 14px rgba(61,220,151,.4)}
 .lc-bar{flex:1;height:1px;margin:0 14px;background:var(--line-2);position:relative;overflow:hidden}
 .lc-bar::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease)}
 .lc-bar.fill::after{transform:scaleX(1)}
@@ -487,8 +494,8 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
 <main id="top">
 
 <!-- HERO -->
-<section class="hero">
-  <div class="glow" aria-hidden="true"></div>
+<section class="hero" id="hero">
+  <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
   <div class="wrap">
     <a class="pill reveal" href="#contracts"><span class="dot-live"></span><b>Live on Base mainnet</b><span>Verified contracts</span><span class="arr">→</span></a>
     <h1 class="grad reveal" data-d="1">The exchange built for agents.</h1>
@@ -508,7 +515,7 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
         <div class="lc-step"><i></i><span>pending</span></div><div class="lc-bar"></div>
         <div class="lc-step"><i></i><span>matched</span></div><div class="lc-bar"></div>
         <div class="lc-step"><i></i><span>settling</span></div><div class="lc-bar"></div>
-        <div class="lc-step final"><i></i><span>settled</span></div>
+        <div class="lc-step lc-final"><i></i><span>settled</span></div>
       </div>
       <span class="lc-label">intent lifecycle · one signature · one batch · one clearing price</span>
     </div>
@@ -815,6 +822,189 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }), {threshold:.14, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* hero: deep-space canvas — starfield + drifting nebula */
+  (() => {
+    const hero = document.getElementById('hero');
+    const cv = document.getElementById('hero-canvas');
+    const ctx = cv.getContext('2d', {alpha:false});
+    const neb = document.createElement('canvas');
+    const nctx = neb.getContext('2d');
+    const NEB_SCALE = 0.25;           // nebula renders at quarter res, then upscales soft
+    const BG = '#0a0a0b';
+    let W = 0, H = 0, dpr = 1, stars = [], quiet = null, center = {x:0, y:0}, focusR = 300;
+    let mx = 0, my = 0, px = 0, py = 0; // pointer target / eased parallax (-1..1)
+    let running = false, visible = true, raf = 0, last = 0, t = 0, intro = 0, fade = 1;
+
+    // star sprite for brighter stars (pre-rendered glow, cheap to blit)
+    const sprite = document.createElement('canvas');
+    sprite.width = sprite.height = 64;
+    (() => {
+      const s = sprite.getContext('2d'), g = s.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, 'rgba(255,255,255,1)');
+      g.addColorStop(.12, 'rgba(225,233,255,.85)');
+      g.addColorStop(.35, 'rgba(140,165,255,.22)');
+      g.addColorStop(1, 'rgba(107,140,255,0)');
+      s.fillStyle = g; s.fillRect(0, 0, 64, 64);
+    })();
+
+    // nebula lobes: each orbits the title on its own slow ellipse, breathing and hue-drifting
+    const lobes = [
+      {a:0.0, orb:.16, r:.50, sq:.55, rot:.2,  hue:226, sat:85, lit:62, al:.40, sp:.018, ph:0},
+      {a:2.1, orb:.34, r:.40, sq:.62, rot:-.5, hue:236, sat:80, lit:60, al:.32, sp:-.024, ph:1.3},
+      {a:4.0, orb:.44, r:.34, sq:.48, rot:.9,  hue:214, sat:90, lit:58, al:.27, sp:.03,  ph:2.4},
+      {a:1.2, orb:.52, r:.30, sq:.70, rot:-1.1,hue:252, sat:70, lit:64, al:.22, sp:-.02, ph:3.1},
+      {a:5.2, orb:.60, r:.26, sq:.40, rot:.4,  hue:204, sat:85, lit:60, al:.18, sp:.026, ph:4.6},
+      {a:3.3, orb:.08, r:.22, sq:.80, rot:0,   hue:228, sat:60, lit:78, al:.16, sp:.04,  ph:5.5}, // bright core
+      {a:0.7, orb:.70, r:.22, sq:.50, rot:1.4, hue:240, sat:75, lit:60, al:.14, sp:-.03, ph:6.2},
+    ];
+
+    function layout() {
+      const r = hero.getBoundingClientRect();
+      W = Math.round(r.width); H = Math.round(r.height);
+      const small = W < 640;
+      dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      neb.width = Math.max(1, Math.round(W * NEB_SCALE)); neb.height = Math.max(1, Math.round(H * NEB_SCALE));
+
+      // nebula centred on the headline; text block becomes a "quiet zone" where stars dim
+      const h1 = hero.querySelector('h1').getBoundingClientRect();
+      const ctas = hero.querySelector('.hero-ctas').getBoundingClientRect();
+      center = {x: h1.left - r.left + h1.width / 2, y: h1.top - r.top + h1.height * .55};
+      focusR = Math.max(320, Math.min(W * .78, 1050));
+      quiet = {x0: Math.min(h1.left, ctas.left) - r.left - 30, x1: Math.max(h1.right, ctas.right) - r.left + 30,
+               y0: h1.top - r.top - 20, y1: ctas.bottom - r.top + 20};
+
+      // star count scales with area; capped hard on small screens
+      const n = Math.round(Math.min(small ? 110 : 340, (W * H) / (small ? 3400 : 3800)));
+      stars = Array.from({length:n}, () => {
+        const z = Math.pow(Math.random(), 2.2);          // most stars far away
+        const bright = Math.random() < (small ? .07 : .06);
+        return {
+          x: Math.random() * W, y: Math.random() * H, z,
+          s: bright ? 8 + z * 13 : .6 + z * 1.3,
+          a: bright ? .6 + z * .4 : .3 + z * .6,
+          tw: Math.random() * Math.PI * 2, tws: .4 + Math.random() * 1.4,
+          vx: -(.6 + z * 2.4), vy: -(.15 + z * .6),     // px/s — barely perceptible drift
+          bright, tint: Math.random() < .25,
+        };
+      });
+    }
+
+    function drawNebula() {
+      const w = neb.width, h = neb.height, s = NEB_SCALE;
+      const cx = (center.x + px * -10) * s, cy = (center.y + py * -6) * s, R = focusR * s;
+      nctx.clearRect(0, 0, w, h);
+      nctx.globalCompositeOperation = 'lighter';
+      for (const L of lobes) {
+        const ang = L.a + t * L.sp;
+        const breathe = 1 + .09 * Math.sin(t * .21 + L.ph);
+        const x = cx + Math.cos(ang) * R * L.orb * 1.6;
+        const y = cy + Math.sin(ang) * R * L.orb * .7;
+        const rad = R * L.r * breathe;
+        const hue = L.hue + 9 * Math.sin(t * .05 + L.ph);
+        const al = L.al * (.85 + .15 * Math.sin(t * .17 + L.ph * 2));
+        const g = nctx.createRadialGradient(0, 0, 0, 0, 0, rad);
+        g.addColorStop(0,   `hsla(${hue},${L.sat}%,${L.lit}%,${al})`);
+        g.addColorStop(.45, `hsla(${hue + 6},${L.sat}%,${L.lit - 8}%,${al * .42})`);
+        g.addColorStop(1,   `hsla(${hue + 12},${L.sat}%,${L.lit - 14}%,0)`);
+        nctx.save();
+        nctx.translate(x, y);
+        nctx.rotate(L.rot + t * L.sp * .6);
+        nctx.scale(1, L.sq);
+        nctx.fillStyle = g;
+        nctx.fillRect(-rad, -rad, rad * 2, rad * 2);
+        nctx.restore();
+      }
+      // carve soft dark lanes so the cloud reads as gas, not a disc
+      nctx.globalCompositeOperation = 'destination-out';
+      for (let i = 0; i < 2; i++) {
+        const ang = t * (i ? -.015 : .012) + i * 2.6;
+        const x = cx + Math.cos(ang) * R * .22, y = cy + Math.sin(ang) * R * .1;
+        const rad = R * (i ? .2 : .26);
+        const g = nctx.createRadialGradient(x, y, 0, x, y, rad);
+        g.addColorStop(0, 'rgba(0,0,0,.45)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+        nctx.fillStyle = g; nctx.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+      }
+      nctx.globalCompositeOperation = 'source-over';
+    }
+
+    function frame(dt) {
+      t += dt;
+      px += (mx - px) * Math.min(1, dt * 2.2);
+      py += (my - py) * Math.min(1, dt * 2.2);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = BG; ctx.fillRect(0, 0, W, H);
+
+      drawNebula();
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(neb, 0, 0, W, H);
+
+      // readability scrim behind the copy and CTAs
+      const sy = quiet.y0 + (quiet.y1 - quiet.y0) * .62, sr = (quiet.x1 - quiet.x0) * .62;
+      const sg = ctx.createRadialGradient(center.x, sy, 0, center.x, sy, sr);
+      sg.addColorStop(0, 'rgba(10,10,11,.5)'); sg.addColorStop(1, 'rgba(10,10,11,0)');
+      ctx.fillStyle = sg; ctx.fillRect(center.x - sr, sy - sr, sr * 2, sr * 2);
+
+      // stars
+      ctx.globalCompositeOperation = 'lighter';
+      for (const s of stars) {
+        s.x += s.vx * dt; s.y += s.vy * dt;
+        if (s.x < -20) s.x += W + 40; if (s.y < -20) s.y += H + 40;
+        const x = s.x + px * -26 * (s.z + .1), y = s.y + py * -18 * (s.z + .1);
+        const inQuiet = x > quiet.x0 && x < quiet.x1 && y > quiet.y0 && y < quiet.y1;
+        const a = s.a * (.7 + .3 * Math.sin(t * s.tws + s.tw)) * (inQuiet ? .35 : 1);
+        ctx.globalAlpha = a;
+        if (s.bright) {
+          ctx.drawImage(sprite, x - s.s / 2, y - s.s / 2, s.s, s.s);
+        } else {
+          ctx.fillStyle = s.tint ? '#b9c8ff' : '#ffffff';
+          ctx.fillRect(x, y, s.s, s.s);
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    // scroll: drift the canvas a little slower than the page and fade it out
+    function onScrollHero() {
+      const r = hero.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / (r.height * .75)));
+      fade = 1 - p * p * (3 - 2 * p);   // smoothstep out
+      cv.style.transform = `translate3d(0,${Math.max(0, -r.top) * .35}px,0)`;
+      cv.style.opacity = (fade * intro).toFixed(3);
+    }
+
+    function loop(now) {
+      raf = 0;
+      if (!running) return;
+      const dt = Math.min(.05, (now - last) / 1000 || 0);
+      // cap at ~60fps on high-refresh displays
+      if (now - last < 15.5) { raf = requestAnimationFrame(loop); return; }
+      last = now;
+      if (intro < 1) { intro = Math.min(1, intro + dt / 1.6); onScrollHero(); }
+      if (fade > .01) frame(dt);
+      raf = requestAnimationFrame(loop);
+    }
+    function start() { if (!running && visible && !document.hidden && !reduce) { running = true; last = performance.now(); raf = requestAnimationFrame(loop); } }
+    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
+
+    layout();
+    if (reduce) { intro = 1; frame(0); onScrollHero(); }
+    else start();
+
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? start() : stop(); }).observe(hero);
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+    addEventListener('scroll', onScrollHero, {passive:true});
+    let rz;
+    new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => { layout(); if (!running) frame(0); onScrollHero(); }, 120); }).observe(hero);
+    if (matchMedia('(pointer:fine)').matches) {
+      addEventListener('pointermove', e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, {passive:true});
+    }
+  })();
 
   /* subtle parallax on glows */
   const glows = [...document.querySelectorAll('.glow')];
