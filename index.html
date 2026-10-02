@@ -208,12 +208,14 @@ section{position:relative;padding:140px 0}
 @media (max-width:420px){.lc-step span{display:none}.lc-step.on span{display:inline}}
 
 /* ---------- how it works ---------- */
-.flow{margin-top:72px;position:relative}
+.flow{margin-top:56px;position:relative}
+#how,#safety,#sdk,#contracts{padding:104px 0}
+@media (max-width:820px){#how,#safety,#sdk,#contracts{padding:80px 0}}
 .flow-track{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;max-width:980px;margin:0 auto;
 }
 .flow-line{
-  position:absolute;left:10%;right:10%;top:31px;height:1px;background:var(--line-2);overflow:hidden;
+  position:absolute;left:16.67%;right:16.67%;top:31px;height:1px;background:var(--line-2);overflow:hidden;
 }
 .flow-line .prog{position:absolute;inset:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform-origin:left;transform:scaleX(0);transition:transform .9s var(--ease)}
 .flow-line .packet{
@@ -230,7 +232,7 @@ section{position:relative;padding:140px 0}
 .node svg{width:26px;height:26px}
 .step .num{font-family:var(--mono);font-size:11px;color:var(--text-3);margin-top:22px;letter-spacing:.08em;transition:color .4s}
 .step h3{margin-top:8px;font-size:16.5px;transition:color .4s;color:var(--text-2)}
-.step p{margin:8px auto 0;font-size:13.5px;line-height:1.55;color:var(--text-3);max-width:210px;transition:color .4s}
+.step p{margin:8px auto 0;font-size:14.5px;line-height:1.55;color:var(--text-3);max-width:270px;transition:color .4s}
 .step.active .node{color:var(--accent-2);border-color:rgba(107,140,255,.55);background:linear-gradient(180deg,#151a2c,#10131c);box-shadow:0 0 0 6px rgba(107,140,255,.07),0 12px 40px -8px var(--accent-glow);transform:translateY(-2px)}
 .step.passed .node{color:var(--accent);border-color:rgba(107,140,255,.3)}
 .step.active .num{color:var(--accent-2)}
@@ -238,20 +240,6 @@ section{position:relative;padding:140px 0}
 .step.active p{color:var(--text-2)}
 .step:hover h3{color:var(--text)}
 
-/* detail panel */
-.flow-panel{
-  margin:64px auto 0;max-width:880px;border:1px solid var(--line);border-radius:20px;overflow:hidden;
-  background:linear-gradient(180deg,rgba(22,24,29,.75),rgba(14,15,18,.75));
-  display:grid;grid-template-columns:1fr 1.15fr;min-height:250px;
-}
-.fp-text{padding:34px 34px;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
-.fp-text .k{font-family:var(--mono);font-size:11.5px;color:var(--accent-2);letter-spacing:.1em;text-transform:uppercase}
-.fp-text h3{font-size:22px;margin-top:10px}
-.fp-text p{color:var(--text-2);font-size:14.5px;margin:12px 0 0}
-.fp-vis{position:relative;padding:26px;display:grid;place-items:center;font-family:var(--mono);font-size:12px}
-.fp-vis svg{width:100%;height:auto;max-height:220px;overflow:visible}
-.fade-swap{animation:fadeSwap .55s var(--ease)}
-@keyframes fadeSwap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (max-width:900px){
   .flow-track{grid-template-columns:1fr;gap:6px;max-width:520px;margin:0 auto}
   .flow-line{left:30px;right:auto;top:30px;bottom:30px;width:1px;height:auto}
@@ -263,26 +251,13 @@ section{position:relative;padding:140px 0}
   .step .num{margin-top:4px}
   .step h3{margin-top:2px}
   .step p{margin:4px 0 0;max-width:none}
-  .flow-panel{grid-template-columns:1fr;margin-top:40px}
-  .fp-text{border-right:0;border-bottom:1px solid var(--line);padding:26px}
 }
 
-/* svg viz shared */
-.v-box{fill:#13151b;stroke:rgba(255,255,255,.12)}
-.v-box.acc{fill:#141a2e;stroke:rgba(107,140,255,.55)}
-.v-box.live{fill:#10201a;stroke:rgba(61,220,151,.5)}
-.v-t{fill:#c9ccd6;font-family:var(--mono);font-size:11px}
-.v-t.s{fill:#6c707c;font-size:9.5px}
-.v-t.a{fill:#9db2ff}
-.v-t.g{fill:#3ddc97}
-.v-l{stroke:rgba(255,255,255,.18);stroke-width:1;fill:none}
-.v-l.a{stroke:#6b8cff;stroke-dasharray:4 5;animation:dash 1.2s linear infinite}
-.v-l.g{stroke:#3ddc97;stroke-dasharray:4 5;animation:dash 1.2s linear infinite}
-@keyframes dash{to{stroke-dashoffset:-18}}
-
 /* ---------- safety ---------- */
-.safety-grid{margin-top:64px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-@media (max-width:820px){.safety-grid{grid-template-columns:1fr}}
+.safety-grid{margin-top:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media (max-width:1100px){.safety-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.safety-grid{grid-template-columns:1fr}}
+@media (min-width:1101px){.safety-grid .card{padding:28px}.safety-grid .card h3{font-size:19px}}
 .card{
   position:relative;border-radius:20px;padding:34px;border:1px solid var(--line);
   background:linear-gradient(180deg,rgba(22,24,29,.8),rgba(14,15,18,.8));overflow:hidden;isolation:isolate;
@@ -303,26 +278,10 @@ section{position:relative;padding:140px 0}
 .icon svg{width:24px;height:24px}
 .card h3{margin-top:24px;font-size:21px}
 .card p{color:var(--text-2);font-size:15px;margin:10px 0 0;max-width:460px}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-.tag{font-family:var(--mono);font-size:11.5px;color:var(--text-2);padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
 @media (max-width:640px){.card{padding:26px}}
 
 /* ---------- code ---------- */
-.code-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start;margin-top:0}
-@media (max-width:980px){.code-grid{grid-template-columns:1fr;gap:44px}}
-.code-steps{list-style:none;padding:0;margin:40px 0 0;display:grid;gap:4px}
-.code-steps li{
-  display:grid;grid-template-columns:30px 1fr;gap:12px;padding:14px 16px;border-radius:12px;cursor:pointer;
-  border:1px solid transparent;transition:background .25s,border-color .25s;
-}
-.code-steps li:hover{background:rgba(255,255,255,.02)}
-.code-steps li.on{background:rgba(107,140,255,.06);border-color:rgba(107,140,255,.2)}
-.code-steps .n{font-family:var(--mono);font-size:12px;color:var(--text-3);padding-top:2px;transition:color .25s}
-.code-steps li.on .n{color:var(--accent-2)}
-.code-steps b{display:block;font-weight:500;font-size:15px;color:var(--text-2);transition:color .25s}
-.code-steps li.on b{color:var(--text)}
-.code-steps span{display:block;font-size:13.5px;color:var(--text-3);margin-top:2px}
-.code-steps code{font-family:var(--mono);font-size:12.5px;color:var(--accent-2)}
+.code-solo{max-width:860px;margin:56px auto 0}
 
 .editor{
   position:relative;border-radius:16px;overflow:hidden;
@@ -346,11 +305,7 @@ section{position:relative;padding:140px 0}
 .gutter{padding:0 16px 0 18px;text-align:right;color:#3b3e47;user-select:none;-webkit-user-select:none}
 .gutter span{display:block}
 .src{margin:0;padding:0 28px 0 4px;color:#d4d6de;white-space:pre;tab-size:2}
-.src .ln{display:block;border-radius:4px;transition:background .3s,opacity .3s}
-.ed-body.focus .src .ln{opacity:.38}
-.ed-body.focus .src .ln.hl{opacity:1;background:rgba(107,140,255,.07)}
-.ed-body.focus .gutter span{opacity:.5}
-.ed-body.focus .gutter span.hl{opacity:1;color:var(--accent-2)}
+.src .ln{display:block}
 .tk-c{color:#5c6170;font-style:italic}
 .tk-s{color:#a8d8a0}
 .tk-k{color:#c4a7ff}
@@ -363,34 +318,25 @@ section{position:relative;padding:140px 0}
 @media (max-width:640px){.ed-body{font-size:12px}.gutter{padding:0 10px 0 12px}.ed-tab.hide-m{display:none}}
 
 /* ---------- live on base ---------- */
-.live-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:64px}
-@media (max-width:980px){.live-grid{grid-template-columns:1fr}}
+.live-solo{display:grid;gap:16px;margin-top:56px}
+.deployed{
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:24px 28px;border:1px solid var(--line);border-radius:20px;
+  background:linear-gradient(180deg,rgba(22,24,29,.8),rgba(14,15,18,.8));
+}
+.deployed p{margin:0;font-size:17px;color:var(--text-2);flex:1;min-width:220px}
+.deployed p b{color:var(--text);font-weight:600}
+.badge-live{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--live);padding:4px 10px 4px 4px;border-radius:999px;background:rgba(61,220,151,.08);border:1px solid rgba(61,220,151,.22)}
+.scan{
+  display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:10px;font-size:14px;font-weight:500;color:var(--text-2);
+  border:1px solid var(--line-2);background:rgba(255,255,255,.02);transition:color .2s,border-color .2s,background .2s;white-space:nowrap;
+}
+.scan:hover{color:var(--text);border-color:rgba(107,140,255,.5);background:rgba(107,140,255,.06)}
+.scan span{transition:transform .2s}
+.scan:hover span{transform:translateX(3px)}
 .panel{border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,rgba(22,24,29,.8),rgba(14,15,18,.8));overflow:hidden}
 .panel-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 24px;border-bottom:1px solid var(--line)}
 .panel-h .t{font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px}
 .panel-h .m{font-family:var(--mono);font-size:11.5px;color:var(--text-3)}
-.badge-live{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--live);padding:4px 10px 4px 4px;border-radius:999px;background:rgba(61,220,151,.08);border:1px solid rgba(61,220,151,.22)}
-.contract{
-  display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:22px 24px;border-bottom:1px solid var(--line);
-  transition:background .25s;
-}
-.contract:last-child{border-bottom:0}
-.contract:hover{background:rgba(255,255,255,.015)}
-.contract .name{font-weight:500;font-size:15.5px;display:flex;align-items:center;gap:10px}
-.contract .role{font-size:13px;color:var(--text-3);margin-top:2px}
-.contract .addr{font-family:var(--mono);font-size:13px;color:var(--text-2);margin-top:10px;word-break:break-all;display:flex;align-items:center;gap:6px}
-.contract .addr .copy-btn{width:28px;height:28px}
-.contract .addr .copy-btn svg{width:14px;height:14px}
-.verified{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:var(--mono);color:var(--live);opacity:.9}
-.verified svg{width:13px;height:13px}
-.scan{
-  display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:10px;font-size:13px;font-weight:500;color:var(--text-2);
-  border:1px solid var(--line-2);background:rgba(255,255,255,.02);transition:color .2s,border-color .2s,background .2s;white-space:nowrap;
-}
-.scan:hover{color:var(--text);border-color:rgba(107,140,255,.5);background:rgba(107,140,255,.06)}
-.scan svg{width:14px;height:14px;transition:transform .2s}
-.scan:hover svg{transform:translate(2px,-2px)}
-@media (max-width:560px){.contract{grid-template-columns:1fr}.scan{justify-self:start}}
 
 .chains{padding:10px}
 .chain{display:flex;align-items:center;gap:14px;padding:16px 14px;border-radius:12px;transition:background .25s}
@@ -530,43 +476,28 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
     <div class="sec-head center">
       <span class="eyebrow reveal">How it works</span>
       <h2 class="grad reveal" data-d="1">From signature to settlement.</h2>
-      <p class="lede reveal" data-d="2">Agents don't send transactions. They sign intents. The solver nets opposing flow peer-to-peer, routes only the remainder through the pool, and settles the whole batch in one transaction.</p>
+      <p class="lede reveal" data-d="2">Agents don't send transactions. They sign intents, and Archon does the rest.</p>
     </div>
 
     <div class="flow reveal" data-d="2" id="flow">
-      <div class="flow-track" role="tablist" aria-label="Swap flow">
+      <div class="flow-track" role="list" aria-label="Swap flow">
         <div class="flow-line" aria-hidden="true"><div class="prog"></div><div class="packet"></div></div>
 
-        <div class="step" role="tab" tabindex="0" data-i="0">
+        <div class="step" role="listitem" tabindex="0">
           <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.83 2.83 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></div>
-          <div class="num">01</div><h3>Agent signs intent</h3>
-          <p>Sell X of A for at least Y of B before T — signed with a scoped session key.</p>
+          <div class="num">01</div><h3>Agent signs an intent</h3>
+          <p>Your agent states what it wants to trade and the worst price it will accept — no transaction, no gas.</p>
         </div>
-        <div class="step" role="tab" tabindex="0" data-i="1">
+        <div class="step" role="listitem" tabindex="0">
           <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></div>
-          <div class="num">02</div><h3>Solver matches (CoW)</h3>
-          <p>Opposing intents on the same pair are filled peer-to-peer.</p>
+          <div class="num">02</div><h3>Solver matches peer-to-peer</h3>
+          <p>Opposing orders are filled directly against each other, so agents trade at one fair price without moving the market.</p>
         </div>
-        <div class="step" role="tab" tabindex="0" data-i="2">
-          <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V6"/><path d="M5 12v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"/></svg></div>
-          <div class="num">03</div><h3>Remainder hits the pool</h3>
-          <p>Only the unmatched excess is routed through on-chain liquidity.</p>
-        </div>
-        <div class="step" role="tab" tabindex="0" data-i="3">
+        <div class="step" role="listitem" tabindex="0">
           <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 12.5l2.8 2.8L16 9.5"/></svg></div>
-          <div class="num">04</div><h3>IntentEngine settles</h3>
-          <p>One transaction, one clearing price, every signature and cap verified.</p>
+          <div class="num">03</div><h3>Settled in one transaction</h3>
+          <p>The whole batch settles atomically on-chain — every trade fills at its price or not at all.</p>
         </div>
-        <div class="step" role="tab" tabindex="0" data-i="4">
-          <div class="node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="13" rx="2.5"/><path d="M3.5 10h17M8 6V4.5h8V6"/><circle cx="16" cy="14.5" r="1.3"/></svg></div>
-          <div class="num">05</div><h3>Outputs to vaults</h3>
-          <p>Proceeds land directly in each agent's vault. Gas is paid by the solver.</p>
-        </div>
-      </div>
-
-      <div class="flow-panel" id="flow-panel">
-        <div class="fp-text" id="fp-text"></div>
-        <div class="fp-vis" id="fp-vis" aria-hidden="true"></div>
       </div>
     </div>
   </div>
@@ -588,32 +519,28 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
         <div class="layer"><span>Layer 01</span><span>Vault</span></div>
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/><path d="M16 3.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></div>
         <h3>Circuit breakers &amp; spending caps</h3>
-        <p>Every swap is checked on-chain against per-swap, per-window and daily caps plus an explicit token allowlist. A breach freezes the vault, and unfreezing waits out a cooldown.</p>
-        <div class="tags"><span class="tag">maxPerSwap</span><span class="tag">maxPerWindow</span><span class="tag">dailyCap</span><span class="tag">cooldownPeriod</span></div>
+        <p>Hard spending limits live on-chain, and any breach freezes the vault automatically.</p>
       </article>
 
       <article class="card reveal" data-d="2">
         <div class="layer"><span>Layer 02</span><span>Keys</span></div>
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.9 12.1L20 3M16 7l3 3M14 9l2 2"/></svg></div>
         <h3>Scoped session keys</h3>
-        <p>Agents sign with a separate, expiring key that can never withdraw. Each key carries its own permissions, token scope and per-swap spending override — and the operator can revoke it at any time.</p>
-        <div class="tags"><span class="tag">canSwap</span><span class="tag">allowedTokens</span><span class="tag">maxPerSwapOverride</span><span class="tag">expiresIn</span></div>
+        <p>Each agent gets its own limited, expiring key that can trade but can never withdraw.</p>
       </article>
 
       <article class="card reveal" data-d="1">
         <div class="layer"><span>Layer 03</span><span>Execution</span></div>
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.3-7.5 9.5-4.3-1.2-7.5-5-7.5-9.5V6L12 3z"/><path d="M9.5 9.5l5 5M14.5 9.5l-5 5"/></svg></div>
         <h3>MEV protection</h3>
-        <p>Intents are signed off-chain and submitted straight to the solver. They never touch the public mempool, so there is nothing to front-run — and your signed <code style="font-family:var(--mono);font-size:13px;color:var(--accent-2)">minAmountOut</code> is enforced at settlement.</p>
-        <div class="tags"><span class="tag">off-chain intents</span><span class="tag">batch clearing price</span><span class="tag">minAmountOut</span></div>
+        <p>Intents never touch the public mempool, so there is nothing to front-run.</p>
       </article>
 
       <article class="card reveal" data-d="2">
         <div class="layer"><span>Layer 04</span><span>Cross-chain</span></div>
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 7.5-2"/><path d="M12 14.5v2.5"/><path d="M19 3.5v3h-3"/></svg></div>
         <h3>Cross-chain escrow with timeout refunds</h3>
-        <p>Cross-chain swaps lock funds in escrow rather than trusting a bridge. If the destination leg doesn't complete before the deadline, the funds refund back to the vault.</p>
-        <div class="tags"><span class="tag">CrossChainEscrow</span><span class="tag">canCrossChainSwap</span><span class="tag">timeout refund</span></div>
+        <p>Cross-chain funds sit in escrow and refund automatically if the trade doesn't complete in time.</p>
       </article>
     </div>
   </div>
@@ -624,37 +551,27 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
 <!-- CODE -->
 <section id="sdk">
   <div class="wrap">
-    <div class="code-grid">
-      <div>
-        <span class="eyebrow reveal">TypeScript SDK</span>
-        <h2 class="grad reveal" data-d="1">A vault, a key,<br>and one-line swaps.</h2>
-        <p class="lede reveal" data-d="2">Fully programmatic — no wallet popups, no browser. Exact base-unit amounts, safe defaults, and a single dependency on ethers v6.</p>
-        <ol class="code-steps reveal" data-d="3" id="code-steps">
-          <li data-r="8-14"><span class="n">01</span><div><b>Connect</b><span>Point <code>ArchonClient</code> at Base and the solver.</span></div></li>
-          <li data-r="16-26"><span class="n">02</span><div><b>Create a vault</b><span>Deploy once, then set caps and the allowlist.</span></div></li>
-          <li data-r="28-29"><span class="n">03</span><div><b>Deposit</b><span>Approves exactly the amount needed.</span></div></li>
-          <li data-r="31-37"><span class="n">04</span><div><b>Issue a session key</b><span>Scoped, capped, expiring in an hour.</span></div></li>
-          <li data-r="39-49"><span class="n">05</span><div><b>Swap &amp; settle</b><span>Sign an intent and wait for the batch.</span></div></li>
-        </ol>
-      </div>
+    <div class="sec-head center">
+      <span class="eyebrow reveal">TypeScript SDK</span>
+      <h2 class="grad reveal" data-d="1">A vault, a key, one-line swaps.</h2>
+      <p class="lede reveal" data-d="2">Fully programmatic — no wallet popups, no browser. From install to a settled trade in ten lines.</p>
+    </div>
 
-      <div class="editor reveal" data-d="2">
-        <div class="ed-bar">
-          <div class="lights"><i></i><i></i><i></i></div>
-          <div class="ed-tabs">
-            <div class="ed-tab on"><span class="ts">TS</span>agent.ts</div>
-            <div class="ed-tab hide-m">package.json</div>
-          </div>
-          <div class="ed-actions">
-            <button class="copy-btn" id="copy-code" aria-label="Copy code"><svg class="cp"><use href="#i-copy"/></svg><svg class="ok"><use href="#i-check"/></svg></button>
-          </div>
+    <div class="editor code-solo reveal" data-d="2">
+      <div class="ed-bar">
+        <div class="lights"><i></i><i></i><i></i></div>
+        <div class="ed-tabs">
+          <div class="ed-tab on"><span class="ts">TS</span>agent.ts</div>
         </div>
-        <div class="ed-body" id="ed-body">
-          <div class="gutter" id="gutter" aria-hidden="true"></div>
-          <pre class="src" id="src"></pre>
+        <div class="ed-actions">
+          <button class="copy-btn" id="copy-code" aria-label="Copy code"><svg class="cp"><use href="#i-copy"/></svg><svg class="ok"><use href="#i-check"/></svg></button>
         </div>
-        <div class="ed-status"><span>@plagtech/archon-sdk · ethers v6</span><span class="ok">● Base · 8453</span></div>
       </div>
+      <div class="ed-body" id="ed-body">
+        <div class="gutter" id="gutter" aria-hidden="true"></div>
+        <pre class="src" id="src"></pre>
+      </div>
+      <div class="ed-status"><span>@plagtech/archon-sdk</span><span class="ok">● Base mainnet</span></div>
     </div>
   </div>
 </section>
@@ -667,42 +584,13 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
     <div class="sec-head">
       <span class="eyebrow reveal">Live on Base</span>
       <h2 class="grad reveal" data-d="1">Deployed. Verified.<br>Open for inspection.</h2>
-      <p class="lede reveal" data-d="2">The core protocol runs on Base mainnet today. Every contract is source-verified on Basescan.</p>
     </div>
 
-    <div class="live-grid">
-      <div class="panel reveal" data-d="1">
-        <div class="panel-h">
-          <span class="t">Core contracts</span>
-          <span class="badge-live"><span class="dot-live"></span>Base mainnet · 8453</span>
-        </div>
-
-        <div class="contract">
-          <div>
-            <div class="name">ArchonRouter <span class="verified"><svg><use href="#i-check"/></svg>verified</span></div>
-            <div class="role">Entry point for direct vault swaps and pool routing</div>
-            <div class="addr"><span>0x45B3042c8a4C2D540a15E89C13B65392d2e14289</span><button class="copy-btn" data-copy="0x45B3042c8a4C2D540a15E89C13B65392d2e14289" aria-label="Copy ArchonRouter address"><svg class="cp"><use href="#i-copy"/></svg><svg class="ok"><use href="#i-check"/></svg></button></div>
-          </div>
-          <a class="scan" href="https://basescan.org/address/0x45B3042c8a4C2D540a15E89C13B65392d2e14289" target="_blank" rel="noopener">Basescan <svg><use href="#i-ext"/></svg></a>
-        </div>
-
-        <div class="contract">
-          <div>
-            <div class="name">IntentEngine <span class="verified"><svg><use href="#i-check"/></svg>verified</span></div>
-            <div class="role">Batch settlement of solver-matched intents</div>
-            <div class="addr"><span>0xf8614FED7664B2505EfD04581f1417D8317648D8</span><button class="copy-btn" data-copy="0xf8614FED7664B2505EfD04581f1417D8317648D8" aria-label="Copy IntentEngine address"><svg class="cp"><use href="#i-copy"/></svg><svg class="ok"><use href="#i-check"/></svg></button></div>
-          </div>
-          <a class="scan" href="https://basescan.org/address/0xf8614FED7664B2505EfD04581f1417D8317648D8" target="_blank" rel="noopener">Basescan <svg><use href="#i-ext"/></svg></a>
-        </div>
-
-        <div class="contract">
-          <div>
-            <div class="name">VaultFactory <span class="verified"><svg><use href="#i-check"/></svg>verified</span></div>
-            <div class="role">Deploys one safety-capped AgentVault per operator</div>
-            <div class="addr"><span>0x58C92a2e7e3b5c3897Ab03466e7f5c1030A40F29</span><button class="copy-btn" data-copy="0x58C92a2e7e3b5c3897Ab03466e7f5c1030A40F29" aria-label="Copy VaultFactory address"><svg class="cp"><use href="#i-copy"/></svg><svg class="ok"><use href="#i-check"/></svg></button></div>
-          </div>
-          <a class="scan" href="https://basescan.org/address/0x58C92a2e7e3b5c3897Ab03466e7f5c1030A40F29" target="_blank" rel="noopener">Basescan <svg><use href="#i-ext"/></svg></a>
-        </div>
+    <div class="live-solo">
+      <div class="deployed reveal" data-d="1">
+        <span class="badge-live"><span class="dot-live"></span>Live</span>
+        <p><b>11 contracts</b> deployed and verified on Base mainnet</p>
+        <a class="scan" href="https://basescan.org/address/0x45B3042c8a4C2D540a15E89C13B65392d2e14289" target="_blank" rel="noopener">View on Basescan <span aria-hidden="true">→</span></a>
       </div>
 
       <div class="panel reveal" data-d="2">
@@ -1052,44 +940,18 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
   if (reduce) { lcSteps.forEach(s => s.classList.add('done')); lcSteps[4].classList.add('on'); lcBars.forEach(b => b.classList.add('fill')); }
   else lcTick();
 
-  /* how it works: stepped flow */
-  const T = (x,y,s,c='') => `<text x="${x}" y="${y}" class="v-t ${c}" text-anchor="middle">${s}</text>`;
-  const B = (x,y,w,h,c='') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" class="v-box ${c}"/>`;
-  const svg = inner => `<svg viewBox="0 0 360 200" role="img">${inner}</svg>`;
-  const panels = [
-    { k:'Step 01 · Sign', h:'The agent signs an intent', p:'A signed message — sell X of A for at least Y of B before T — bound to a nonce, the vault and the chain ID. It is EIP-191 signed by a session key and sent to the solver, never broadcast.',
-      v: svg(`${B(20,40,140,120,'acc')}${T(90,66,'intent','a')}${T(90,92,'tokenIn   USDC')}${T(90,110,'tokenOut  DAI')}${T(90,128,'amountIn  1,000')}${T(90,146,'minOut    998.2','s')}
-        <path d="M160 100 H232" class="v-l a"/>${B(232,74,110,52)}${T(287,97,'solver')}${T(287,113,'POST /intent','s')}`) },
-    { k:'Step 02 · Match', h:'Opposing flow is netted peer-to-peer', p:'Coincidence of Wants: when one agent sells USDC for DAI and another sells DAI for USDC, the solver fills them against each other at a single clearing price. No pool, no price impact for the matched amount.',
-      v: svg(`${B(16,26,118,48,'acc')}${T(75,47,'agent A')}${T(75,63,'USDC → DAI','s')}${B(16,126,118,48,'acc')}${T(75,147,'agent B')}${T(75,163,'DAI → USDC','s')}
-        <path d="M134 50 C190 50 190 100 226 100" class="v-l a"/><path d="M134 150 C190 150 190 100 226 100" class="v-l a"/>${B(226,72,118,56,'live')}${T(285,96,'CoW match','g')}${T(285,113,'one clearing price','s')}`) },
-    { k:'Step 03 · Route', h:'Only the remainder touches the pool', p:'Whatever can\'t be matched peer-to-peer is routed through on-chain liquidity. Each intent is still protected by its own signed minAmountOut — an intent that can\'t meet it is refunded, not filled badly.',
-      v: svg(`${B(16,72,110,56,'acc')}${T(71,96,'batch')}${T(71,113,'USDC/DAI','s')}
-        <path d="M126 88 C180 88 180 46 226 46" class="v-l g"/><path d="M126 112 C180 112 180 154 226 154" class="v-l a"/>${B(226,22,118,48,'live')}${T(285,43,'matched','g')}${T(285,59,'peer-to-peer','s')}${B(226,130,118,48)}${T(285,151,'remainder')}${T(285,167,'→ pool','s')}`) },
-    { k:'Step 04 · Settle', h:'IntentEngine settles the batch', p:'The solver submits the whole batch in one transaction. For every leg, the vault verifies the signature, nonce, caps and allowlist before a single token moves. The solver pays the gas.',
-      v: svg(`${B(16,40,96,30)}${T(64,60,'leg 1','s')}${B(16,85,96,30)}${T(64,105,'leg 2','s')}${B(16,130,96,30)}${T(64,150,'leg 3','s')}
-        <path d="M112 55 H150 V100 H186" class="v-l a"/><path d="M112 100 H186" class="v-l a"/><path d="M112 145 H150 V100 H186" class="v-l a"/>${B(186,62,158,76,'acc')}${T(265,90,'IntentEngine','a')}${T(265,108,'settleBatch()')}${T(265,124,'sig · nonce · caps ✓','s')}`) },
-    { k:'Step 05 · Deliver', h:'Outputs land in the vaults', p:'Proceeds are credited straight back to each agent\'s vault, where the same caps and allowlist govern the next trade. The SDK resolves waitForSettlement() with amountOut, txHash and how much was matched.',
-      v: svg(`${B(16,72,120,56,'acc')}${T(76,96,'IntentEngine','a')}${T(76,113,'batch settled','s')}
-        <path d="M136 92 C186 92 186 50 224 50" class="v-l g"/><path d="M136 108 C186 108 186 150 224 150" class="v-l g"/>${B(224,24,120,52,'live')}${T(284,46,'vault A')}${T(284,63,'+ DAI','g')}${B(224,124,120,52,'live')}${T(284,146,'vault B')}${T(284,163,'+ USDC','g')}`) },
-  ];
+  /* how it works: step highlight cycles along the line */
   const steps = [...document.querySelectorAll('.step')];
   const prog = document.querySelector('.flow-line .prog');
-  const fpText = document.getElementById('fp-text'), fpVis = document.getElementById('fp-vis');
   const vertical = () => matchMedia('(max-width:900px)').matches;
   let cur = -1, timer, flowVisible = false;
   function show(i) {
     cur = i;
-    steps.forEach((s, j) => { s.classList.toggle('active', j === i); s.classList.toggle('passed', j < i); s.setAttribute('aria-selected', j === i); });
+    steps.forEach((s, j) => { s.classList.toggle('active', j === i); s.classList.toggle('passed', j < i); });
     const f = i / (steps.length - 1);
     prog.style.transform = vertical() ? `scaleY(${f})` : `scaleX(${f})`;
-    const d = panels[i];
-    fpText.innerHTML = `<span class="k">${d.k}</span><h3>${d.h}</h3><p>${d.p}</p>`;
-    fpVis.innerHTML = d.v;
-    fpText.classList.remove('fade-swap'); fpVis.classList.remove('fade-swap');
-    void fpText.offsetWidth; fpText.classList.add('fade-swap'); fpVis.classList.add('fade-swap');
   }
-  function auto() { clearTimeout(timer); if (reduce || !flowVisible) return; timer = setTimeout(() => { show((cur + 1) % steps.length); auto(); }, 4200); }
+  function auto() { clearTimeout(timer); if (reduce || !flowVisible) return; timer = setTimeout(() => { show((cur + 1) % steps.length); auto(); }, 3200); }
   steps.forEach((s, i) => {
     const go = () => { show(i); auto(); };
     s.addEventListener('click', go);
@@ -1099,60 +961,21 @@ footer{border-top:1px solid var(--line);padding:64px 0 48px;font-size:14px}
   new IntersectionObserver(([e]) => { flowVisible = e.isIntersecting; flowVisible ? auto() : clearTimeout(timer); }, {threshold:.3}).observe(document.getElementById('flow'));
   addEventListener('resize', () => show(cur));
 
-  /* code editor — from the @plagtech/archon-sdk README quick start */
-  const code = `import { Wallet } from 'ethers';
-import {
-  ArchonClient,
-  parseAmount,
-  formatAmount,
-} from '@plagtech/archon-sdk';
+  /* code editor — condensed from the @plagtech/archon-sdk README quick start */
+  const code = `import { ArchonClient, parseAmount } from '@plagtech/archon-sdk';
 
-// Connect to Base mainnet and the Archon solver
-const archon = new ArchonClient({
-  rpcUrl: process.env.BASE_RPC_URL!,
-  solverUrl: 'https://solver.archon.exchange',
-  chainId: 8453,
-});
-const operator = new Wallet(process.env.OPERATOR_KEY!, archon.provider);
-
-// 1. Create a vault and set its safety parameters (once)
+const archon = new ArchonClient({ rpcUrl, solverUrl });
 const vault = await archon.createVault(operator);
-await vault.initialize({
-  maxPerSwap: parseAmount('10000', 'USDC'),
-  maxPerWindow: parseAmount('50000', 'USDC'), // per rolling window
-  windowDuration: 3600,                        // 1 hour window
-  maxSlippageBps: 50,                          // 0.5%
-  dailyCap: parseAmount('100000', 'USDC'),
-  cooldownPeriod: 300,                         // 5 min before unfreeze
-  allowedTokens: ['USDC', 'DAI'],
-});
-
-// 2. Deposit (approves the vault for exactly this amount)
+await vault.initialize(safetyCaps); // limits enforced on-chain
 await vault.deposit('USDC', parseAmount('1000', 'USDC'));
 
-// 3. Create a scoped session key for your agent
-const session = await vault.createSessionKey({
-  canSwap: true,
-  canBatchSwap: true,  // required for solver-settled swaps
-  maxPerSwapOverride: parseAmount('5000', 'USDC'),
-  expiresIn: 3600,     // 1 hour (the default)
-});
-
-// 4. The agent trades — signs an intent, never touches the mempool
-const intent = await session.swap({
-  tokenIn: 'USDC',
-  tokenOut: 'DAI',
-  amountIn: parseAmount('1', 'USDC'),
-  slippageBps: 30, // minAmountOut = quote × (1 − 0.3%)
-});
-
-// 5. Wait for batch settlement on-chain
-const result = await intent.waitForSettlement();
-console.log(formatAmount(result.amountOut, 'DAI'), result.txHash);`;
+const agent = await vault.createSessionKey();
+const intent = await agent.swap({ tokenIn: 'USDC', tokenOut: 'DAI', amountIn: '100000000' });
+await intent.waitForSettlement(); // done ✓`;
 
   const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const KW = new Set(['import','from','const','await','new','true','false','return','export','async','let']);
-  const TYPES = new Set(['Wallet','ArchonClient']);
+  const TYPES = new Set(['ArchonClient']);
   function hl(line) {
     const re = /(\/\/.*$)|('(?:[^'\\]|\\.)*')|(\b\d[\d_]*\b)|([A-Za-z_$][\w$]*)|(\s+)|([^\sA-Za-z_$\d'\/]+|\/)/g;
     let out = '', m;
@@ -1177,26 +1000,6 @@ console.log(formatAmount(result.amountOut, 'DAI'), result.txHash);`;
   document.getElementById('gutter').innerHTML = lines.map((_, i) => `<span data-n="${i+1}">${i+1}</span>`).join('');
   document.getElementById('copy-code').addEventListener('click', e => copy(code, e.currentTarget));
 
-  const body = document.getElementById('ed-body');
-  const lnEls = [...body.querySelectorAll('.src .ln')], gEls = [...body.querySelectorAll('.gutter span')];
-  const csItems = [...document.querySelectorAll('#code-steps li')];
-  function focusRange(li) {
-    csItems.forEach(x => x.classList.toggle('on', x === li));
-    if (!li) { body.classList.remove('focus'); return; }
-    const [a, b] = li.dataset.r.split('-').map(Number);
-    body.classList.add('focus');
-    lnEls.forEach((el, i) => el.classList.toggle('hl', i + 1 >= a && i + 1 <= b));
-    gEls.forEach((el, i) => el.classList.toggle('hl', i + 1 >= a && i + 1 <= b));
-    if (body.scrollHeight > body.clientHeight) {
-      const target = lnEls[a - 1].offsetTop - 40;
-      body.scrollTo({top: Math.max(0, target), behavior: reduce ? 'auto' : 'smooth'});
-    }
-  }
-  csItems.forEach(li => {
-    li.addEventListener('mouseenter', () => focusRange(li));
-    li.addEventListener('click', () => focusRange(li.classList.contains('on') ? null : li));
-  });
-  document.getElementById('code-steps').addEventListener('mouseleave', () => focusRange(null));
 
   /* roadmap bars */
   const rm = document.getElementById('roadmap-chart');
